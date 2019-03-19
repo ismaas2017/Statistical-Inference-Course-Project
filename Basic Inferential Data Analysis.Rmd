@@ -1,0 +1,43 @@
+---
+title: "Untitled"
+author: "Ismail HASSAN DJILAL"
+date: "19 mars 2019"
+output: html_document
+---
+
+## Part 2: Basic Inferential Data Analysis Instructions
+
+In the second portion of the project, we're going to analyze the ToothGrowth data in the R datasets package.
+
+```{r load ToothGrowth data}
+attach(ToothGrowth)
+head(ToothGrowth)
+
+summary(ToothGrowth)
+boxplot(len~supp)
+```
+
+With the boxplot we can see the variation of the length of odontoblasts between guinea pigs according to the delivery methods OJ or VC .
+
+```{r t test of len by supp}
+library(dplyr)
+t.test(len~supp, paired=FALSE, var.equal=F)
+
+```
+
+At 95% confidence level, there is no significant difference (p-value = 0.06>0.05) of the two means Furthermore 95% confidence interval ([-0.171, 7.5710156]) contain 0
+
+Conclusion : we can not reject the null hypothese (The delivery method orange juice or ascorbic acid has no impact of the lenght of odontobasts) in favour of the alternative hypothesis
+ 
+```{r t.test of len by dose} 
+
+#subset of Toothgrowth, population of guinea pigs who received the levels of vitamin C 0.5 and 1
+
+p<-ToothGrowth%>%filter(dose == 0.5  | dose == 1)
+# t test of len according supp equal 0.5 or 1
+t.test(len~dose, var.equal=F, data = p)
+```
+
+At 95% confidence level, there is a significant difference (p-value = 1.268e-07< 0.05) of the two means Furthermore 95% confidence interval ([-11.983781, -11.983781])
+
+Conclusion : dose level change (0.5 and 1 dose levels) irrespective of delivery methods (OJ or VC) has an impact on the mean of len. We can reject the null hypothese.
