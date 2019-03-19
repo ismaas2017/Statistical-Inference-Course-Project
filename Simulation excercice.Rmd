@@ -1,0 +1,70 @@
+---
+title: "Simulation Exercise"
+author: "Ismail HASSAN DJILAL"
+date: "19 mars 2019"
+output: html_document
+---
+
+
+# Peer-graded Assignment: Statistical Inference Course Project
+
+## Part 1: Simulation Exercise Instructions 
+
+In this project you will investigate the exponential distribution in R and compare it with the Central Limit Theorem. The exponential distribution can be simulated in R with rexp(n, lambda) where lambda is the rate parameter. The mean of exponential distribution is 1/lambda and the standard deviation is also 1/lambda. Set lambda = 0.2 for all of the simulations. We will investigate the distribution of averages of 40 exponentials with a thousand simulations.
+
+Illustrate via simulation and associated explanatory text the properties of the distribution of the mean of 40 exponentials. You should
+
+Show the sample mean and compare it to the theoretical mean of the distribution.
+Show how variable the sample is (via variance) and compare it to the theoretical variance of the distribution.
+
+Show that the distribution is approximately normal.
+In point 3, focus on the difference between the distribution of a large collection of random exponentials and the distribution of a large collection of averages of 40 exponentials.
+
+```{r The exponential distribution}
+set.seed(47)
+lambda=0.2
+n<-40 
+simulations<-1000
+
+sim<-rexp(n*simulations, lambda)
+m<-matrix(sim,simulations)
+sample.means<-rowMeans(m)
+sm.avg<-mean(sample.means)
+mean<-1/lambda
+sm.var<-var(sample.means)
+sm.var.clt<-1/(lambda^2*n)
+hist(sample.means,main="The exponential distribution")
+abline(v = sm.avg, col="red", lwd=2)
+abline(v= mean, col="blue",lwd=2)
+legend(x = "topright",c("Sample mean", "Mean"),
+col = c("red", "blue", "red"),lwd = c(2, 2, 2))
+
+```
+
+1.
+
+```{r sample mean and the theorical mean, echo=FALSE}
+print(paste0("the sample mean : ", sm.avg))
+print(paste0("the theoretical mean of the distribution :", mean))
+
+```
+
+We can see that two means are equivalent
+
+2.
+
+```{r sample variance and the theorical variance, echo=FALSE}
+print(paste0("the variance of sample distribution :", sm.var))
+print(paste0("the theoretical variance of the distribution : " , sm.var.clt))
+
+```
+
+We note that the two variances are roughly equivalent.
+
+3.
+
+The distribution is normal for two reasons 
+
+1.The histogram is centered at the population mean (1/lamda=sample.mean=mean)
+2.The 95th of exponential distribution is mu+1.65*sigma (5+5*1.65) is 13.225
+and qnorm(.95,mean=5, sd=5) =13.22427 are equivalent.
